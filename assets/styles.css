@@ -60,8 +60,22 @@ h1 {
     border-radius: 10px;
 }
 
-.bloco-converter #valueIn, .bloco-converter #valueOut {
+
+.bloco-converter .value-coin {
+    background-color: #fff;
+    padding-right: 10px;
+    border-radius: 10px;
+}
+
+.bloco-converter .value-coin input[type="text"]{
     max-width: 100px;
+}
+.bloco-converter .value-coin .symbol {
+    font-size: 13px;
+}
+
+.bloco-converter .value-coin .symbol {
+    color: #373737;
 }
 
 
@@ -79,10 +93,3 @@ h1 {
     color: #494dde;
     background-color: #fff;
 }
-
-
-/*@media screen and (max-width: 648px) {
-    .section-conversor {
-        max-width: 80%;
-    }
-} */
