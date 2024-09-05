@@ -10,7 +10,7 @@
 <body>
     <h1>Conversor de moedas</h1>
     <section class="section-conversor">
-        <div class="bloco-converter">
+        <div class="bloco-converter" id="converte-in">
             <div class="value-coin">
                 <input type="text" name="value-in" id="valueIn" value="0,00">
                 <span class="symbol">R$</span>
@@ -20,21 +20,25 @@
                     <input type="text" name="coin-in" id="CoinIn" value="BRL - Real Brasileiro">
                     <span class="material-symbols-outlined">arrow_drop_down</span>
                 </div>
+                <ul class="options-coin">
+                </ul>
             </div>
         </div>
         <div class="bloco-trocar">
             <span class="material-symbols-outlined">swap_vert</span>
         </div>
-        <div class="bloco-converter">
+        <div class="bloco-converter" id="converte-out">
             <div class="value-coin">
                 <input type="text" name="value-out" id="valueOut" value="0,00">
-                <span class="symbol">USD</span>
+                <span class="symbol">US$</span>
             </div>
             <div class="select-coin">
                 <div class="input-coin">
                     <input type="text" name="coin-out" id="CoinOut" value="USD - Dólar Americano">
                     <span class="material-symbols-outlined">arrow_drop_down</span>
                 </div>
+                <ul class="options-coin">
+                </ul>
             </div>
         </div>
     </section>
