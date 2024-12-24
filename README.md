@@ -1,2 +1,3 @@
-# Conversor-de-moedas
-Projeto de conversor de moedas utilizando API
+# Currency-App
+
+Projeto de consulta de cotações de moedas.
