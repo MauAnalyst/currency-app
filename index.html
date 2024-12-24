@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./dist/style.css" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=searchandeditandsettings"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=searchandeditandsettingsandtrending_upandtrending_down"
     />
   </head>
   <body>
@@ -38,9 +38,27 @@
             <span id="name-currency">BRL</span>
           </div>
         </div>
-        <!-- <div id="settings">
-          <span class="material-symbols-outlined">settings</span>
-        </div> -->
+        <div class="infos">
+          <div>
+            <p>
+              <span id="arrow-variation" class="material-symbols-outlined"
+                >trending_up</span
+              >
+              <span id="variation">1,2%</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="result-notfound">
+        
+        <img src="./dist/imgs/notfound.png" alt="notfound" />
+        <p>
+            <p id="text-notfound">Moeda não encontrada</p>
+            <p>Altere a moeda base</p>
+        </p>
+      </div>
+      <div id="settings">
+        <span class="material-symbols-outlined">settings</span>
       </div>
     </div>
     <script src="./dist/app.js"></script>

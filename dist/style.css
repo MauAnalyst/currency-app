@@ -33,7 +33,7 @@ body {
 }
 
 #container {
-  background: linear-gradient(to top, var(--color-3), var(--color-2));
+  background: linear-gradient(to bottom, var(--color-3), var(--color-2));
   background-color: #fff;
   padding: 1rem;
   border-radius: 1rem;
@@ -83,16 +83,18 @@ body {
 }
 
 .result {
+  display: none;
   margin-top: 2rem;
   padding: 0.5rem;
   border-radius: 1rem;
   /* background-color: #fff; */
   color: black;
+  transition: all 0.2s ease-in-out;
 }
 
 #currency-in {
   margin-top: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: end;
   justify-content: center;
@@ -117,6 +119,39 @@ body {
   font-weight: bold;
 }
 
+.infos div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.infos p {
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  color: #fff;
+  background-color: #05b577;
+  border-radius: 0.5rem;
+}
+
+.infos .material-symbols-outlined {
+  font-size: 1.2rem;
+  /* background-color: #05b577;
+  border-radius: 0.5rem;
+  padding: 0.1rem 0.5rem; */
+}
+
+#settings {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 #settings .material-symbols-outlined {
   font-size: 1.4rem;
   cursor: pointer;
@@ -126,6 +161,28 @@ body {
 }
 
 #settings .material-symbols-outlined:hover {
-  background-color: var(--color-1);
+  /* background-color: var(--color-1); */
   color: #fff;
+}
+
+.result-notfound {
+  margin-top: 2rem;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-notfound {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #15263f;
+}
+
+.result-notfound img {
+  max-width: 200px;
+}
+
+.result-notfound p {
+  margin-top: 0.5rem;
 }
