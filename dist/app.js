@@ -8,11 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+const items = [
+    { name: "apple", type: "fruit" },
+    { name: "banana", type: "fruit" },
+    { name: "cherry", type: "fruit" },
+    { name: "date", type: "fruit" },
+];
+const options = {
+    keys: ["key", "value"],
+    threshold: 0.3,
+};
 const search = document.querySelector("#search");
 const searchValue = document.querySelector("#currency-search");
 search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
-    if (searchValue.value.length < 3) {
+    let Checkvalue = searchValue.value.trim();
+    if (Checkvalue.length < 2) {
         return (search.style.borderColor = "red");
     }
     const coinsList = yield currencyList();
@@ -22,13 +33,21 @@ search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, f
     }));
     let check = [];
     coinsArray.forEach((e) => {
-        if (e.key.toLowerCase() === searchValue.value.toLowerCase() ||
-            e.value.toLowerCase() === searchValue.value.toLowerCase()) {
+        if (e.key.toLowerCase() === Checkvalue.toLowerCase() ||
+            e.value.toLowerCase() === Checkvalue.toLowerCase()) {
             check.push(e);
         }
     });
     if (!check[0]) {
-        return (search.style.borderColor = "red");
+        console.log(coinsArray);
+        const fuse = new Fuse(coinsArray, options);
+        const result = fuse.search(Checkvalue.toLowerCase());
+        if (result.length > 0) {
+            check.push(result[0].item);
+        }
+        else {
+            return (search.style.borderColor = "red");
+        }
     }
     searchValue.value = `${check[0].key} - ${check[0].value}`;
     displayCurrencies(`${check[0].key}-BRL`);
@@ -69,23 +88,22 @@ function displayCurrencies(coin) {
                 const dataJson = yield data.json();
                 const dataKey = Object.keys(dataJson)[0];
                 const dataItem = dataJson[dataKey];
-                console.log(dataItem);
                 const price = +dataItem.ask;
                 const varia = +dataItem.pctChange;
                 if (varia < 0) {
                     arrowVariation.textContent = "trending_down";
-                    infos.style.backgroundColor = "#de3d3d";
+                    infos.style.color = "#dc2323";
                 }
                 else {
                     arrowVariation.textContent = "trending_up";
-                    infos.style.backgroundColor = "#05b577";
+                    infos.style.color = "#0ee190";
                 }
-                console.log(dataItem.code);
                 currency.textContent = `1 ${dataItem.code} equivale à`;
                 value.textContent = (+price.toFixed(2)).toLocaleString("pt-br", {
                     minimumFractionDigits: 2,
                 });
                 variation.textContent = `${varia.toFixed(2).replace(".", ",")}%`;
+                animateNumberFromZero(100);
             }
             else {
                 notfound.style.display = "flex";
@@ -98,4 +116,33 @@ function displayCurrencies(coin) {
             textNotFound.textContent = `Erro ao buscar cotação: ${error.message}`;
         }
     });
+}
+function animateNumberFromZero(duration = 2000) {
+    var _a;
+    const element = document.getElementById("value");
+    if (!element) {
+        console.error('Element with id "value" not found.');
+        return;
+    }
+    const targetValue = parseFloat(((_a = element.textContent) === null || _a === void 0 ? void 0 : _a.replace(/\./g, "").replace(",", ".")) || "0");
+    if (isNaN(targetValue)) {
+        console.error('The value in "value" is not a valid number.');
+        return;
+    }
+    const startValue = 0;
+    const startTime = performance.now();
+    const formatter = new Intl.NumberFormat("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+    function update(currentTime) {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const currentValue = startValue + (targetValue - startValue) * progress;
+        element.textContent = formatter.format(currentValue);
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    requestAnimationFrame(update);
 }
