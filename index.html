@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Money Cotação</title>
+    <link rel="stylesheet" href="./dist/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=searchandeditandsettings"
+    />
+  </head>
+  <body>
+    <!-- <div id="base-currency">
+      <span>Moeda Base: </span>
+      <p>BRL - Real Brasileiro</p>
+    </div> -->
+    <div id="container">
+      <!-- barra de pesquisa -->
+      <form id="search">
+        <input
+          type="text"
+          id="currency-search"
+          name="currency-search"
+          placeholder="Pesquisar moeda"
+        />
+        <button type="submit">
+          <span class="material-symbols-outlined"> search </span>
+        </button>
+      </form>
+      <!-- resultado da pesquisa -->
+      <div class="result">
+        <div id="currency">1 USD equivale à</div>
+        <div id="currency-in">
+          <h1 id="value">6,12</h1>
+          <div>
+            <!-- <span id="pct-change">1,33%</span> -->
+            <span id="name-currency">BRL</span>
+          </div>
+        </div>
+        <!-- <div id="settings">
+          <span class="material-symbols-outlined">settings</span>
+        </div> -->
+      </div>
+    </div>
+    <script src="./dist/app.js"></script>
+  </body>
+</html>
