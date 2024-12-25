@@ -8,20 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const items = [
-    { name: "apple", type: "fruit" },
-    { name: "banana", type: "fruit" },
-    { name: "cherry", type: "fruit" },
-    { name: "date", type: "fruit" },
-];
-const options = {
-    keys: ["key", "value"],
-    threshold: 0.3,
-};
 const search = document.querySelector("#search");
-const searchValue = document.querySelector("#currency-search");
 search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
+    const searchValue = document.querySelector("#currency-search");
     let Checkvalue = searchValue.value.trim();
     if (Checkvalue.length < 2) {
         return (search.style.borderColor = "red");
@@ -33,13 +23,18 @@ search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, f
     }));
     let check = [];
     coinsArray.forEach((e) => {
+        const currency = `${e.key} - ${e.value}`;
         if (e.key.toLowerCase() === Checkvalue.toLowerCase() ||
-            e.value.toLowerCase() === Checkvalue.toLowerCase()) {
+            e.value.toLowerCase() === Checkvalue.toLowerCase() ||
+            currency.toLowerCase() === Checkvalue.toLowerCase()) {
             check.push(e);
         }
     });
     if (!check[0]) {
-        console.log(coinsArray);
+        const options = {
+            keys: ["key", "value"],
+            threshold: 0.3,
+        };
         const fuse = new Fuse(coinsArray, options);
         const result = fuse.search(Checkvalue.toLowerCase());
         if (result.length > 0) {
@@ -50,11 +45,61 @@ search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, f
         }
     }
     searchValue.value = `${check[0].key} - ${check[0].value}`;
-    displayCurrencies(`${check[0].key}-BRL`);
+    displayCurrencies(`${check[0].key}-${checkCurrencyBase()}`);
 }));
 document.addEventListener("click", () => {
     search.style.borderColor = "";
 });
+const baseCurrency = document.querySelector("#base-currency");
+const buttonEdit = document.querySelector("#button-edit");
+const background = document.querySelector(".background");
+const containerEdit = document.querySelector(".edit-base");
+const closeContainer = document.querySelector("#close");
+const formEdit = document.querySelector("#form-edit");
+buttonEdit.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
+    const formOptions = document.querySelector("#change-baseCurrency");
+    const baseCurrency = document.querySelector("#base-currency");
+    background.style.display = "block";
+    containerEdit.style.display = "flex";
+    setTimeout(() => {
+        containerEdit.classList.add("slow");
+    }, 50);
+    const coinsList = yield currencyList();
+    const coinsArray = Object.keys(coinsList).map((key) => ({
+        key,
+        value: coinsList[key],
+    }));
+    let html = `<option value="${baseCurrency.textContent}" > ${baseCurrency.textContent} </option>`;
+    coinsArray.forEach((e) => {
+        html += `<option value="${e.key} - ${e.value}">${e.key} - ${e.value}</option>`;
+    });
+    formOptions.innerHTML = html;
+}));
+closeContainer.addEventListener("click", () => {
+    background.style.display = "none";
+    containerEdit.style.display = "none";
+    containerEdit.classList.remove("slow");
+});
+formEdit.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, function* () {
+    event.preventDefault();
+    const formOptions = document.querySelector("#change-baseCurrency");
+    const acronym = document.querySelector("#name-currency");
+    const searchValue = document.querySelector("#currency-search");
+    background.style.display = "none";
+    containerEdit.style.display = "none";
+    containerEdit.classList.remove("slow");
+    const baseCurrency = document.querySelector("#base-currency");
+    baseCurrency.textContent = formOptions.value;
+    acronym.textContent = `${checkCurrencyBase()}`;
+    console.log("valor da pesquisa", searchValue.value);
+    if (searchValue.value) {
+        const submitEvent = new Event("submit", {
+            bubbles: true,
+            cancelable: true,
+        });
+        search.dispatchEvent(submitEvent);
+    }
+}));
 function currencyList() {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch("https://economia.awesomeapi.com.br/json/available/uniq");
@@ -145,4 +190,9 @@ function animateNumberFromZero(duration = 2000) {
         }
     }
     requestAnimationFrame(update);
+}
+function checkCurrencyBase() {
+    var _a;
+    const baseCurrency = document.querySelector("#base-currency");
+    return (_a = baseCurrency.textContent) === null || _a === void 0 ? void 0 : _a.split(" ")[0];
 }

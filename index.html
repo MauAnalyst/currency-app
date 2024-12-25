@@ -3,66 +3,82 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Money Cotação</title>
+    <title>Currency App</title>
     <link rel="stylesheet" href="./dist/style.css" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=searchandeditandsettingsandtrending_upandtrending_down"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=searchandeditandsettingsandtrending_upandtrending_downandclose"
     />
   </head>
   <body>
     <h2>Currency App</h2>
-    <div id="container">
-      <!-- barra de pesquisa -->
-      <form id="search">
-        <input
-          type="text"
-          id="currency-search"
-          name="currency-search"
-          placeholder="Pesquisar moeda"
-        />
-        <button type="submit">
-          <span class="material-symbols-outlined"> search </span>
-        </button>
-      </form>
-      <!-- resultado da pesquisa -->
-      <div class="result">
-        <div id="currency">1 equivale à</div>
-        <div id="currency-in">
-          <h1 id="value">0,00</h1>
-          <div>
-            <!-- <span id="pct-change">1,33%</span> -->
-            <span id="name-currency">BRL</span>
+    <div>
+      <div id="container-price">
+        <!-- barra de pesquisa -->
+        <form id="search">
+          <input
+            type="text"
+            id="currency-search"
+            name="currency-search"
+            placeholder="Pesquisar moeda"
+          />
+          <button type="submit">
+            <span class="material-symbols-outlined"> search </span>
+          </button>
+        </form>
+        <!-- resultado da pesquisa -->
+        <div class="result">
+          <div id="currency">1 equivale à</div>
+          <div id="currency-in">
+            <h1 id="value">0,00</h1>
+            <div>
+              <!-- <span id="pct-change">1,33%</span> -->
+              <span id="name-currency">BRL</span>
+            </div>
+          </div>
+          <div class="infos">
+            <div>
+              <p>
+                <span id="arrow-variation" class="material-symbols-outlined"
+                  >trending_up</span
+                >
+                <span id="variation">1,2%</span>
+              </p>
+            </div>
           </div>
         </div>
-        <div class="infos">
+        <div class="result-notfound">
+          <img src="./dist/imgs/notfound.png" alt="notfound" />
           <div>
-            <p>
-              <span id="arrow-variation" class="material-symbols-outlined"
-                >trending_up</span
-              >
-              <span id="variation">1,2%</span>
-            </p>
+            <p id="text-notfound">Moeda não encontrada</p>
+            <p>Altere a moeda base</p>
           </div>
         </div>
+        <!-- <div id="settings">
+              <span class="material-symbols-outlined">settings</span>
+            </div> -->
       </div>
-      <div class="result-notfound">
-        <img src="./dist/imgs/notfound.png" alt="notfound" />
+
+      <div class="containter-basecurrency">
+        <p>Moeda Base:</p>
         <div>
-          <p id="text-notfound">Moeda não encontrada</p>
-          <p>Altere a moeda base</p>
+          <span id="base-currency">BRL - Real Brasileiro</span>
+          <span id="button-edit" class="material-symbols-outlined">edit</span>
         </div>
       </div>
-      <!-- <div id="settings">
-        <span class="material-symbols-outlined">settings</span>
-      </div> -->
     </div>
 
-    <div class="containter-basecurrency">
-      <p>Moeda Base:</p>
+    <div class="background"></div>
+    <div class="edit-base">
       <div>
-        <span id="base-currency">BRL - Real Brasileiro</span>
-        <span class="material-symbols-outlined">edit</span>
+        <span class="material-symbols-outlined" id="close">close</span>
+        <h3>Editar moeda base</h3>
+        <form id="form-edit">
+          <select name="change-baseCurrency" id="change-baseCurrency">
+            <!-- <option value="BRL">BRL - Real Brasileiro</option> -->
+          </select>
+          <button type="submit">Salvar</button>
+        </form>
       </div>
     </div>
 

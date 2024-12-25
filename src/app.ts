@@ -1,25 +1,13 @@
 declare const Fuse: any;
 
-const items = [
-  { name: "apple", type: "fruit" },
-  { name: "banana", type: "fruit" },
-  { name: "cherry", type: "fruit" },
-  { name: "date", type: "fruit" },
-];
-
-const options = {
-  keys: ["key", "value"], // Campos para buscar
-  threshold: 0.3, // Limite de similaridade
-};
-
 const search = document.querySelector("#search") as HTMLFormElement;
-const searchValue = document.querySelector(
-  "#currency-search"
-) as HTMLFormElement;
 
 //realizando pesquisa
 search.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const searchValue = document.querySelector(
+    "#currency-search"
+  ) as HTMLFormElement;
 
   let Checkvalue: string = searchValue.value.trim();
 
@@ -36,23 +24,29 @@ search.addEventListener("submit", async (event) => {
 
   let check: { key: string; value: string }[] = [];
   coinsArray.forEach((e) => {
+    const currency = `${e.key} - ${e.value}`;
     if (
       e.key.toLowerCase() === Checkvalue.toLowerCase() ||
-      e.value.toLowerCase() === Checkvalue.toLowerCase()
+      e.value.toLowerCase() === Checkvalue.toLowerCase() ||
+      currency.toLowerCase() === Checkvalue.toLowerCase()
     ) {
       check.push(e);
     }
   });
 
   if (!check[0]) {
-    console.log(coinsArray);
-    // Cria a instância do Fuse.js
+    const options = {
+      keys: ["key", "value"], // campos para buscar
+      threshold: 0.3, // similaridade
+    };
+
     const fuse = new Fuse(coinsArray, options);
 
-    // Realiza a pesquisa
+    // verificando a similaridade
     const result = fuse.search(Checkvalue.toLowerCase());
 
     if (result.length > 0) {
+      //pega o primeiro mais similar
       check.push(result[0].item);
     } else {
       return (search.style.borderColor = "red");
@@ -61,11 +55,98 @@ search.addEventListener("submit", async (event) => {
 
   searchValue.value = `${check[0].key} - ${check[0].value}`;
 
-  displayCurrencies(`${check[0].key}-BRL`);
+  displayCurrencies(`${check[0].key}-${checkCurrencyBase()}`);
 });
 
 document.addEventListener("click", () => {
   search.style.borderColor = "";
+});
+
+//editando moeda base
+
+const baseCurrency = document.querySelector(
+  "#base-currency"
+) as HTMLBodyElement;
+const buttonEdit = document.querySelector("#button-edit") as HTMLBodyElement;
+const background = document.querySelector(".background") as HTMLBodyElement;
+const containerEdit = document.querySelector(".edit-base") as HTMLBodyElement;
+const closeContainer = document.querySelector("#close") as HTMLBodyElement;
+const formEdit = document.querySelector("#form-edit") as HTMLFormElement;
+
+buttonEdit.addEventListener("click", async () => {
+  const formOptions = document.querySelector(
+    "#change-baseCurrency"
+  ) as HTMLFormElement;
+  const baseCurrency = document.querySelector(
+    "#base-currency"
+  ) as HTMLBodyElement;
+
+  background.style.display = "block";
+  containerEdit.style.display = "flex";
+  setTimeout(() => {
+    containerEdit.classList.add("slow");
+  }, 50);
+
+  const coinsList = await currencyList();
+
+  const coinsArray = Object.keys(coinsList).map((key) => ({
+    key,
+    value: coinsList[key],
+  }));
+
+  let html = `<option value="${baseCurrency.textContent}" > ${baseCurrency.textContent} </option>`;
+  coinsArray.forEach((e) => {
+    html += `<option value="${e.key} - ${e.value}">${e.key} - ${e.value}</option>`;
+  });
+
+  formOptions.innerHTML = html;
+});
+
+closeContainer.addEventListener("click", () => {
+  background.style.display = "none";
+  containerEdit.style.display = "none";
+  containerEdit.classList.remove("slow");
+});
+
+// background.addEventListener("click", () => {
+//   background.style.display = "none";
+//   containerEdit.style.display = "none";
+//   containerEdit.classList.remove("slow");
+// });
+
+//adicionado moeda base
+formEdit.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const formOptions = document.querySelector(
+    "#change-baseCurrency"
+  ) as HTMLFormElement;
+  const acronym = document.querySelector("#name-currency") as HTMLFormElement;
+  const searchValue = document.querySelector(
+    "#currency-search"
+  ) as HTMLFormElement;
+
+  background.style.display = "none";
+  containerEdit.style.display = "none";
+  containerEdit.classList.remove("slow");
+
+  const baseCurrency = document.querySelector(
+    "#base-currency"
+  ) as HTMLBodyElement;
+
+  baseCurrency.textContent = formOptions.value;
+
+  acronym.textContent = `${checkCurrencyBase()}`;
+
+  console.log("valor da pesquisa", searchValue.value);
+
+  if (searchValue.value) {
+    const submitEvent = new Event("submit", {
+      bubbles: true,
+      cancelable: true,
+    });
+    search.dispatchEvent(submitEvent);
+  }
 });
 
 // --------------- funções
@@ -191,4 +272,12 @@ function animateNumberFromZero(duration: number = 2000): void {
   requestAnimationFrame(update);
 }
 
-//nimateNumberFromZero(3000);
+//buscando moeda base
+
+function checkCurrencyBase() {
+  const baseCurrency = document.querySelector(
+    "#base-currency"
+  ) as HTMLBodyElement;
+
+  return baseCurrency.textContent?.split(" ")[0];
+}

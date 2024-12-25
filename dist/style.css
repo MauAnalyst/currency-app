@@ -37,12 +37,13 @@ h2 {
   margin-bottom: 1rem;
 }
 
-#container {
+#container-price {
   background: linear-gradient(to bottom, var(--color-3), var(--color-2));
   padding: 1rem;
   border-radius: 1rem;
   min-width: 300px;
   transition: all 0.2s ease-in;
+  position: relative;
 }
 
 #search {
@@ -198,6 +199,7 @@ h2 {
 .containter-basecurrency div {
   display: flex;
   align-items: center;
+  font-weight: bold;
   gap: 0.5rem;
 }
 
@@ -208,4 +210,95 @@ h2 {
   padding: 0.2rem;
   border-radius: 50%;
   cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.containter-basecurrency div .material-symbols-outlined:hover {
+  background-color: var(--color-1);
+}
+
+.background {
+  display: none;
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #0b1616;
+  opacity: 90%;
+}
+
+.edit-base {
+  position: fixed;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(-50%);
+  transition: all 0.2s ease-in-out;
+}
+
+.edit-base.slow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.edit-base div {
+  position: relative;
+  background: linear-gradient(to top, #5a2f85, #3d35ae);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  min-width: 300px;
+}
+
+.edit-base h3 {
+  color: #fff;
+}
+
+#close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0.5rem;
+  /* margin-right: 0.2rem; */
+  cursor: pointer;
+  color: #fff;
+}
+
+#form-edit {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+#form-edit select {
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background-color: #fff;
+}
+
+#form-edit select:focus {
+  outline: none;
+}
+
+#form-edit button {
+  border: none;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #0b1616;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#form-edit button:hover {
+  background-color: #1c3252;
 }
