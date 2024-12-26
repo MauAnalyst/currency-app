@@ -9,8 +9,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 const search = document.querySelector("#search");
+const currencySearch = document.querySelector("#currency-search");
+const currencyOptions = document.querySelector("#currency-options");
+currencySearch.addEventListener("input", (event) => __awaiter(void 0, void 0, void 0, function* () {
+    currencyOptions.style.display = "block";
+    if (currencySearch.value === "") {
+        currencyOptions.style.display = "none";
+    }
+    const coinsList = yield currencyList();
+    const coinsArray = Object.keys(coinsList).map((key) => ({
+        key,
+        value: coinsList[key],
+    }));
+    const options = {
+        keys: ["key", "value"],
+        threshold: 0.3,
+    };
+    const fuse = new Fuse(coinsArray, options);
+    const result = fuse.search(currencySearch.value.toLowerCase());
+    let html = "";
+    if (result.length > 0) {
+        result.forEach((e) => {
+            html += `<li>${e.item.key} - ${e.item.value}</li>`;
+        });
+    }
+    else {
+        html = "<li>Moeda não encontrada</li>";
+    }
+    currencyOptions.innerHTML = html;
+    const currencyOption = document.querySelectorAll("#currency-options li");
+    currencyOption.forEach((e) => {
+        e.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
+            currencySearch.value = e.textContent;
+            currencyOptions.style.display = "none";
+            const submitEvent = new Event("submit", {
+                bubbles: true,
+                cancelable: true,
+            });
+            search.dispatchEvent(submitEvent);
+        }));
+    });
+}));
+document.addEventListener("click", (event) => {
+    search.style.borderColor = "";
+    if (!search.contains(event.target) &&
+        !currencyOptions.contains(event.target)) {
+        currencyOptions.style.display = "none";
+    }
+});
 search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, function* () {
     event.preventDefault();
+    currencyOptions.style.display = "none";
     const searchValue = document.querySelector("#currency-search");
     let Checkvalue = searchValue.value.trim();
     if (Checkvalue.length < 2) {
@@ -47,9 +96,6 @@ search.addEventListener("submit", (event) => __awaiter(void 0, void 0, void 0, f
     searchValue.value = `${check[0].key} - ${check[0].value}`;
     displayCurrencies(`${check[0].key}-${checkCurrencyBase()}`);
 }));
-document.addEventListener("click", () => {
-    search.style.borderColor = "";
-});
 const baseCurrency = document.querySelector("#base-currency");
 const buttonEdit = document.querySelector("#button-edit");
 const background = document.querySelector(".background");

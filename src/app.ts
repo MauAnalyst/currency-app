@@ -1,10 +1,81 @@
 declare const Fuse: any;
-
 const search = document.querySelector("#search") as HTMLFormElement;
+
+// moedas de pesquisa
+
+const currencySearch = document.querySelector(
+  "#currency-search"
+) as HTMLFormElement;
+const currencyOptions = document.querySelector(
+  "#currency-options"
+) as HTMLFormElement;
+
+currencySearch.addEventListener("input", async (event: any) => {
+  currencyOptions.style.display = "block";
+  if (currencySearch.value === "") {
+    currencyOptions.style.display = "none";
+  }
+
+  const coinsList = await currencyList();
+
+  const coinsArray = Object.keys(coinsList).map((key) => ({
+    key,
+    value: coinsList[key],
+  }));
+
+  const options = {
+    keys: ["key", "value"], // campos para buscar
+    threshold: 0.3, // similaridade
+  };
+
+  const fuse = new Fuse(coinsArray, options);
+
+  // verificando a similaridade
+  const result = fuse.search(currencySearch.value.toLowerCase());
+
+  let html: string = "";
+  if (result.length > 0) {
+    result.forEach((e: { item: { key: string; value: string } }) => {
+      html += `<li>${e.item.key} - ${e.item.value}</li>`;
+    });
+  } else {
+    html = "<li>Moeda não encontrada</li>";
+  }
+  currencyOptions.innerHTML = html;
+
+  const currencyOption = document.querySelectorAll(
+    "#currency-options li"
+  ) as NodeListOf<HTMLLIElement>;
+  currencyOption.forEach((e) => {
+    e.addEventListener("click", async () => {
+      currencySearch.value = e.textContent;
+      currencyOptions.style.display = "none";
+
+      const submitEvent = new Event("submit", {
+        bubbles: true,
+        cancelable: true,
+      });
+      search.dispatchEvent(submitEvent);
+    });
+  });
+});
+
+document.addEventListener("click", (event: MouseEvent) => {
+  search.style.borderColor = "";
+
+  if (
+    !search.contains(event.target as Node) &&
+    !currencyOptions.contains(event.target as Node)
+  ) {
+    currencyOptions.style.display = "none";
+  }
+});
 
 //realizando pesquisa
 search.addEventListener("submit", async (event) => {
   event.preventDefault();
+  currencyOptions.style.display = "none";
+
   const searchValue = document.querySelector(
     "#currency-search"
   ) as HTMLFormElement;
@@ -58,12 +129,7 @@ search.addEventListener("submit", async (event) => {
   displayCurrencies(`${check[0].key}-${checkCurrencyBase()}`);
 });
 
-document.addEventListener("click", () => {
-  search.style.borderColor = "";
-});
-
-//editando moeda base
-
+// editando moeda base
 const baseCurrency = document.querySelector(
   "#base-currency"
 ) as HTMLBodyElement;
