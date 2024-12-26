@@ -71,6 +71,7 @@ h2 {
   padding-left: 1rem;
   width: 100%;
   font-size: 0.9rem;
+  border-radius: 1rem;
 }
 
 #search input[type="text"]:focus {
