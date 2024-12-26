@@ -29,6 +29,7 @@ body {
   align-items: center;
   justify-content: center;
   background: linear-gradient(to bottom, #193e3f, #0b1616);
+  transition: all 0.2s ease;
 }
 /* 
 #base-currency {
