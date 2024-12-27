@@ -2,6 +2,9 @@
 
 Projeto de consulta de cotações de moedas utilizando typescript.
 
+Acesso:
+https://mauanalyst.github.io/currency-app/
+
 ### API
 
   ```bash
